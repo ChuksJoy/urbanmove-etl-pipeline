@@ -8,8 +8,8 @@ This project implements a robust ETL (Extract, Transform, Load) data pipeline fo
 - Enrichment: Merges real-time or historical weather conditions with trip data to provide deeper insights into urban mobility patterns.
 
 # Data Source
-- Tripdata [.https://github.demo.trial.altinity.cloud:8443]
-- Weather Data [.https://www.kaggle.com/datasets/danbraswell/new-york-city-weather-18692022?utm_source=chatgpt.com]
+- ![Tripdata](https://github.demo.trial.altinity.cloud:8443)
+- ![Weather Data](https://www.kaggle.com/datasets/danbraswell/new-york-city-weather-18692022?utm_source=chatgpt.com)
   
 # Tech Stack
 Python (Pandas), PostgreSQL, ClickHouse API, Docker, and Apache Airflow.
