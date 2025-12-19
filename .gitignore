@@ -1,0 +1,13 @@
+# Data files
+data/*.csv
+data/*.json
+
+# Python environment
+__pycache__/
+*.py[cod]
+venv/
+.env
+
+# Airflow logs and DB
+logs/
+airflow.db
