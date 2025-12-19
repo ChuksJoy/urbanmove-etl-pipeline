@@ -1,0 +1,4 @@
+clickhouse-connect
+pandas
+sqlalchemy
+psycopg2-binary

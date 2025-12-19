@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: urbanmove-postgres
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 10s
+      retries: 5
+
+  airflow-webserver:
+    build: .
+    container_name: urbanmove-airflow-webserver
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__FERNET_KEY: "fsnNzinaNnJh7gYIblEK43tontcdjXTltWqWXK0lQe4="
+      AIRFLOW__WEBSERVER__SECRET_KEY: "60ad60f72736e3a1d4b2e0d9e5756e59"
+      _AIRFLOW_DB_MIGRATE: 'true'
+      _AIRFLOW_WWW_USER_CREATE: 'true'
+      _AIRFLOW_WWW_USER_USERNAME: admin
+      _AIRFLOW_WWW_USER_PASSWORD: admin
+    command: webserver
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./scripts:/opt/airflow/scripts
+      - ./data:/opt/airflow/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  airflow-scheduler:
+    build: .
+    container_name: urbanmove-airflow-scheduler
+    restart: always
+    environment:
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__FERNET_KEY: "fsnNzinaNnJh7gYIblEK43tontcdjXTltWqWXK0lQe4="
+      AIRFLOW__WEBSERVER__SECRET_KEY: "60ad60f72736e3a1d4b2e0d9e5756e59"
+      _AIRFLOW_DB_MIGRATE: 'true'
+    command: scheduler
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./scripts:/opt/airflow/scripts
+      - ./data:/opt/airflow/data
+    depends_on:
+      airflow-webserver:
+        condition: service_started
+
+volumes:
+  postgres-db-volume:
