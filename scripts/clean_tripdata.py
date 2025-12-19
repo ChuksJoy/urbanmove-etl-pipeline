@@ -64,6 +64,17 @@ def main():
         df = df[df["passenger_count"].between(1, 6)]
     print(f"After passenger count validation: {len(df)}")
 
+    # Drop unnecessary / junk columns
+    drop_cols = [
+        "junk1", 
+        "junk2", 
+        "store_and_fwd_flag", 
+        "pickup_location_id", 
+        "dropoff_location_id"
+    ]
+    df = df.drop(columns=[c for c in drop_cols if c in df.columns])
+    print(f"Dropped unnecessary columns: {drop_cols}")
+
     # 10. Write cleaned CSV
     os.makedirs(os.path.dirname(CLEAN_PATH), exist_ok=True)
     df.to_csv(CLEAN_PATH, index=False)

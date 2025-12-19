@@ -5,7 +5,7 @@ data/*.json
 # Python environment
 __pycache__/
 *.py[cod]
-venv/
+.venv/
 .env
 
 # Airflow logs and DB
